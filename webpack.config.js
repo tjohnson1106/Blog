@@ -1,5 +1,6 @@
 const { resolve } = require("path");
-const { HtmlWebpackPlugin } = require("html-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const DashboardPlugin = require("webpack-dashboard/plugin");
 
 const srcDir = resolve(__dirname, "src");
 
@@ -9,5 +10,22 @@ module.exports = {
   output: {
     filename: "bundle.js"
   },
-  plugins: [new HtmlWebpackPlugin()]
+  module: {
+    rules: [
+      {
+        exclude: /node_modules/
+      },
+      {
+        test: /\.js$/,
+        loader: "babel-loader",
+        exclude: /node_modules/
+      }
+    ]
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: `src/index.html`
+    }),
+    new DashboardPlugin()
+  ]
 };
